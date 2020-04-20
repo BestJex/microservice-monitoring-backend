@@ -9,7 +9,6 @@ import org.springframework.boot.WebApplicationType;
 
 @EnableHZeroGateway
 @EnableDiscoveryClient
-@SpringBootApplication
 public class GatewayApplication {
 
     public static void main(String[] args) {
