@@ -1,0 +1,121 @@
+# Default values for hzero-admin.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: registry.choerodon.com.cn/hzero-hzero/hzero-admin
+  pullPolicy: Always
+
+preJob:
+  image: registry.cn-hangzhou.aliyuncs.com/choerodon-tools/dbtool:0.6.2
+  timeout: 1200
+  preInitDB:
+    # 是否初始化groovy脚本或excel数据
+    enable: false
+    # 初始化数据库配置
+    datasource:
+      url: jdbc:mysql://db.hzero.org:3306/hzero_governance?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: hzero
+      password: hzero
+
+env:
+  open:
+    # Eureka 注册中心地址
+    EUREKA_DEFAULT_ZONE: http://dev.hzero.org:8000/eureka/
+    # 服务以IP地址注册
+    EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
+    # 是否启用配置中心
+    SPRING_CLOUD_CONFIG_ENABLED: false
+    # 配置中心地址
+    SPRING_CLOUD_CONFIG_URI: http://dev.hzero.org:8010/
+    # 数据库地址
+    SPRING_DATASOURCE_URL: jdbc:mysql://db.hzero.org:3306/hzero_governance?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    # 数据库用户名
+    SPRING_DATASOURCE_USERNAME: hzero
+    # 数据库密码
+    SPRING_DATASOURCE_PASSWORD: hzero
+    # 连接池最小空闲连接数
+    SPRING_DATASOURCE_MINIMUM_IDLE: 20
+    # 连接池允许的最大连接数
+    SPRING_DATASOURCE_MAXIMUM_POOL_SIZE: 200
+    # 等待连接池分配连接的最大时长（毫秒）
+    SPRING_DATASOURCE_CONNECTION_TIMEOUT: 30000
+    # Redis地址
+    SPRING_REDIS_HOST: redis.hzero.org
+    # Redis端口
+    SPRING_REDIS_PORT: 6379
+    # Redis数据库
+    SPRING_REDIS_DATABASE: 1
+    # 资源池中最大连接数
+    # 默认8，-1表示无限制；可根据服务并发redis情况及服务端的支持上限调整
+    SPRING_REDIS_POOL_MAX_ACTIVE: 50
+    # 资源池运行最大空闲的连接数
+    # 默认8，-1表示无限制；可根据服务并发redis情况及服务端的支持上限调整，一般建议和max-active保持一致，避免资源伸缩带来的开销
+    SPRING_REDIS_POOL_MAX_IDLE: 50
+    # 当资源池连接用尽后，调用者的最大等待时间(单位为毫秒)
+    # 默认 -1 表示永不超时，设置5秒
+    SPRING_REDIS_POOL_MAX_WAIT: 5000
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接
+    # 默认值为8，建议设置每个CPU核心一个线程
+    SERVER_UNDERTOW_IO_THREADS: 4
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程
+    # 默认等于 io-threads*8，它的值设置取决于系统的负载，可适当调大该值 
+    SERVER_UNDERTOW_WORKER_THREADS: 128
+    # 每块buffer的空间大小，越小空间被利用越充分
+    # 不要设置太大，以免影响其他应用，合适即可
+    SERVER_UNDERTOW_BUFFER_SIZE: 1024
+    # Hystrix 熔断超时时间
+    HYSTRIX_COMMAND_TIMEOUT_IN_MILLISECONDS: 40000
+    # Ribbon 读取超时时间
+    RIBBON_READ_TIMEOUT: 30000
+    # Ribbon 连接超时时间
+    RIBBON_CONNECT_TIMEOUT: 3000
+    # 是否自动刷新服务权限
+    HZERO_AUTO_REFRESH_PERMISSION_ENABLE: true
+    # 是否自动刷新服务路由
+    HZERO_AUTO_REFRESH_ROUTE_ENABLE: true
+    # 是否自动刷新服务Swagger文档
+    HZERO_AUTO_REFRESH_SWAGGER_ENABLE: true
+    # 是否启用API监控
+    HZERO_METRIC_SYNC_ENABLE : false
+    # 是否启用TRACE报告
+    HZERO_TRACE_REDIS_REPORTER_ENABLE : false
+    # 日志级别
+    LOG_LEVEL: info
+    # JVM参数
+    JAVA_OPTS: >
+      -Xms1024m
+      -Xmx1536m
+
+metrics:
+  path: /prometheus
+  group: spring-boot
+
+logs:
+  parser: spring-boot
+
+persistence:
+  enabled: false
+
+service:
+  enabled: false
+  type: ClusterIP
+  port: 8060
+  name: hzero-admin
+deployment:
+  # 管理端口
+  managementPort: 8061
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources,such as Minikube. If you do want to specify resources,uncomment the following
+  # lines,adjust them as necessary,and remove the curly braces after 'resources:'.
+  limits:
+    # cpu: 100m
+    memory: 1.7Gi
+  requests:
+    # cpu: 100m
+    memory: 1.2Gi
