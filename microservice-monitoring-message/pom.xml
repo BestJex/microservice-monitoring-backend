@@ -23,7 +23,7 @@
         <!-- 依赖的服务 -->
         <dependency>
             <groupId>org.hzero</groupId>
-            <artifactId>hzero-message-saas</artifactId>
+            <artifactId>hzero-message</artifactId>
         </dependency>
        
         

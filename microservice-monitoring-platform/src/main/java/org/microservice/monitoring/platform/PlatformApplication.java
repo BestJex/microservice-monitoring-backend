@@ -1,6 +1,5 @@
 package org.microservice.monitoring.platform;
 
-
 import org.hzero.autoconfigure.platform.EnableHZeroPlatform;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.boot.SpringApplication;

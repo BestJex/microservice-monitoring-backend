@@ -1,6 +1,5 @@
 package org.microservice.monitoring.oauth;
 
-
 import org.hzero.autoconfigure.oauth.EnableHZeroOauth;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.boot.SpringApplication;

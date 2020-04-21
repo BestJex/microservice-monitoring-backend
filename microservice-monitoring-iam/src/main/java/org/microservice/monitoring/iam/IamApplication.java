@@ -1,6 +1,5 @@
 package org.microservice.monitoring.iam;
 
-
 import org.hzero.autoconfigure.iam.EnableHZeroIam;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.boot.SpringApplication;

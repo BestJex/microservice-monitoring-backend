@@ -23,7 +23,7 @@
         <!-- 依赖的服务 -->
         <dependency>
             <groupId>org.hzero</groupId>
-            <artifactId>hzero-admin-saas</artifactId>
+            <artifactId>hzero-admin</artifactId>
         </dependency>
        
         
