@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.microservice.monitoring.services.infra.mapper.WarningHistoryMapper">
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap id="BaseResultMap" type="org.microservice.monitoring.services.domain.entity.WarningHistory">
+        <result column="id" property="id" jdbcType="DECIMAL"/>
+        <result column="warning_type" property="warningType" jdbcType="VARCHAR"/>
+        <result column="warning_status" property="warningStatus" jdbcType="DECIMAL"/>
+        <result column="warning_content" property="warningContent" jdbcType="VARCHAR"/>
+        <result column="warning_recipient" property="warningRecipient" jdbcType="VARCHAR"/>
+        <result column="warning_sender" property="warningSender" jdbcType="VARCHAR"/>
+        <result column="creation_date" property="creationDate" jdbcType="DATE"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="last_update_date" property="lastUpdateDate" jdbcType="DATE"/>
+        <result column="last_updated_by" property="lastUpdatedBy" jdbcType="VARCHAR"/>
+        <result column="object_version_number" property="objectVersionNumber" jdbcType="DECIMAL"/>
+    </resultMap>
+</mapper>

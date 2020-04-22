@@ -13,12 +13,13 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class SwaggerTags {
 
     public static final String EXAMPLE = "Example";
-
     public static final String WARNINGTYPE = "WarningType";
+    public static final String WARNINGHISTORY = "WarningHistory";
 
     @Autowired
     public SwaggerTags(Docket docket) {
         docket.tags(new Tag(EXAMPLE, "EXAMPLE 案例"));
         docket.tags(new Tag(WARNINGTYPE, "预警类型"));
+        docket.tags(new Tag(WARNINGHISTORY, "预警历史"));
     }
 }
