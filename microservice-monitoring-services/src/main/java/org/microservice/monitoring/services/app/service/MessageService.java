@@ -2,6 +2,8 @@ package org.microservice.monitoring.services.app.service;
 
 import org.hzero.boot.message.entity.Message;
 
+import java.util.Map;
+
 /**
  * @description: 消息Service
  * @author: miaoyang.chen@hand-china.com
@@ -12,7 +14,7 @@ public interface MessageService {
 
     Message sendEmail();
 
-    void sendPhone();
+    Message sendPhone();
 
-    void sendWeChat();
+    Map<String, Object> sendWeChat();
 }

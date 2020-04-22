@@ -10,7 +10,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.hzero.core.base.BaseController;
 import org.hzero.core.util.Results;
+import org.microservice.monitoring.services.app.service.ESService;
 import org.microservice.monitoring.services.app.service.MessageService;
+import org.microservice.monitoring.services.app.service.impl.ESServiceImpl;
 import org.microservice.monitoring.services.config.SwaggerTags;
 import org.microservice.monitoring.services.domain.entity.AccessTokenResult;
 import org.microservice.monitoring.services.domain.entity.WarningHistory;
@@ -30,15 +32,18 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(tags = SwaggerTags.MESSAGECONTROLLER)
 public class MessageController extends BaseController {
 
-
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private ESServiceImpl esService;
 
     @ApiOperation(value = "公众号消息发送")
     @Permission(level = ResourceLevel.SITE)
     @GetMapping
     public ResponseEntity<AccessTokenResult> sendWeChat() {
-        messageService.sendWeChat();
+        // messageService.sendWeChat();
+        esService.wechatWarning("Caused by: java.net.BindException: 地址已在使用");
         return Results.success();
     }
 }

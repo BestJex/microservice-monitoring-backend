@@ -54,24 +54,22 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void sendPhone() {
-        // 租户id
-        long tenantId = 0L;
+    public Message sendPhone() {
         // 服务编码
-        String serverCode = "";
+        String serverCode = "MSMS_CHEN_MIAO_YANG";
         // 消息模板编码
-        String messageTemplateCode = "HITF.HEALTH_CHECK";
+        String messageTemplateCode = "MSMS.WARNING_SMS";
         // 接收人组
         List<Receiver> receiverList = new ArrayList<>();
         receiverList.add(new Receiver().setPhone("18697701660"));
         // 参数
         Map<String, String> maps = new HashMap<>();
-        maps.put("processName", "您有一条新的预警消息");
-        maps.put("processDescription", "服务器发生预警，请及时登录系统查看错误信息！！！");
+        maps.put("name", "admin");
+        return messageClient.sendSms(serverCode, messageTemplateCode, receiverList, maps);
     }
 
     @Override
-    public void sendWeChat() {
+    public Map<String, Object> sendWeChat() {
         // 第一步，获取 access_token
         String appid = "wx02c42dbfedd53985";
         String secret = "f32a35a64b1dc7aa97bd138fd1221495";
@@ -92,5 +90,8 @@ public class MessageServiceImpl implements MessageService {
         ResponseEntity<AccessTokenResult> result = restTemplate.postForEntity(sendUrl, data, AccessTokenResult.class);
         log.info("第二次结果：{}", result);
         log.info("第二次结果-Body：{}", result.getBody());
+        data.put("errcode", result.getBody().getErrcode());
+        data.put("content", "服务器发生预警，请及时登录系统查看错误信息！！！");
+        return data;
     }
 }

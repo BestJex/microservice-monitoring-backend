@@ -25,7 +25,16 @@
             <groupId>org.hzero</groupId>
             <artifactId>hzero-message</artifactId>
         </dependency>
-       
+        <dependency>
+            <groupId>org.hzero.starter</groupId>
+            <artifactId>hzero-starter-sms-core</artifactId>
+            <version>${hzero.starter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hzero.starter</groupId>
+            <artifactId>hzero-starter-sms-aliyun</artifactId>
+            <version>${hzero.starter.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>org.springframework.cloud</groupId>

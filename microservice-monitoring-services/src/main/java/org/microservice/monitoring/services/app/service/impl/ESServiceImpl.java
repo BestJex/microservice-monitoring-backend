@@ -16,6 +16,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: ESService实现类
@@ -39,7 +40,12 @@ public class ESServiceImpl implements ESService {
         esModels.forEach(val -> {
             List<Logs> logs = logsRepository.selectByCondition(Condition.builder(Logs.class)
                     .andWhere(Sqls.custom().andEqualTo(Logs.FIELD_LOG_ID, val.getId())).build());
-            warning(val.getMessage());
+            // 邮件预警
+            emailWarning(val.getMessage());
+            // 手机短信预警
+            phoneWarning(val.getMessage());
+            // 微信预警
+            wechatWarning(val.getMessage());
             if (logs.size() != 0) {
                 Logs newLog = logs.get(0);
                 newLog.setLogHost(val.getHost());
@@ -55,8 +61,9 @@ public class ESServiceImpl implements ESService {
         });
     }
 
-    public void warning(String message) {
+    public void emailWarning(String message) {
         if (message.indexOf("Caused by: java.net.BindException: 地址已在使用") != -1) {
+            // 邮件预警
             Message emailResult = messageService.sendEmail();
             if (emailResult.getMessageId() != null) {
                 WarningHistory warningHistory = new WarningHistory();
@@ -69,6 +76,43 @@ public class ESServiceImpl implements ESService {
                 warningHistoryRepository.insert(warningHistory);
             }
             log.info("emailResult: {}", emailResult);
+        }
+    }
+
+    public void phoneWarning(String message) {
+        if (message.indexOf("Caused by: java.net.BindException: 地址已在使用") != -1) {
+            // 手机短信预警
+            Message phoneResult = messageService.sendPhone();
+            log.info("emailResult-1: {}", phoneResult);
+            if (phoneResult.getMessageId() != null) {
+                WarningHistory warningHistory = new WarningHistory();
+                warningHistory.setWarningType("手机短信预警");
+                warningHistory.setWarningTitle(phoneResult.getSubject());
+                warningHistory.setWarningContent(phoneResult.getContent());
+                warningHistory.setWarningStatus(phoneResult.getSendFlag());
+                warningHistory.setWarningRecipient("18697701660");
+                warningHistory.setWarningSender("Admin");
+                warningHistoryRepository.insert(warningHistory);
+            }
+            log.info("emailResult-2: {}", phoneResult);
+        }
+    }
+
+
+    public void wechatWarning(String message) {
+        if (message.indexOf("Caused by: java.net.BindException: 地址已在使用") != -1) {
+            // 微信预警
+            Map<String, Object> objectMap = messageService.sendWeChat();
+            WarningHistory warningHistory = new WarningHistory();
+            warningHistory.setWarningType("微信预警");
+            warningHistory.setWarningTitle("微信预警-" + objectMap.get("touser"));
+            warningHistory.setWarningContent("" + objectMap.get("content"));
+            String errcode = (String)objectMap.get("errcode");
+            warningHistory.setWarningStatus(errcode.equals("0") ? 1 : 0);
+            warningHistory.setWarningRecipient("" + objectMap.get("touser"));
+            warningHistory.setWarningSender("Admin");
+            warningHistoryRepository.insert(warningHistory);
+            log.info("wechatResult: {}", objectMap);
         }
     }
 
