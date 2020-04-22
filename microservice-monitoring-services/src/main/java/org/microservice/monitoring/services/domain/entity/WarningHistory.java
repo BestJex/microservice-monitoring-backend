@@ -52,7 +52,7 @@ public class WarningHistory extends AuditDomain {
 	@ApiModelProperty(value = "")
 	private String warningTitle;
    @ApiModelProperty(value = "")
-    private Long warningStatus;
+    private Integer warningStatus;
    @ApiModelProperty(value = "")    
     private String warningContent;
    @ApiModelProperty(value = "")    
@@ -91,11 +91,11 @@ public class WarningHistory extends AuditDomain {
     /**
      * @return 
      */
-	public Long getWarningStatus() {
+	public Integer getWarningStatus() {
 		return warningStatus;
 	}
 
-	public void setWarningStatus(Long warningStatus) {
+	public void setWarningStatus(Integer warningStatus) {
 		this.warningStatus = warningStatus;
 	}
     /**

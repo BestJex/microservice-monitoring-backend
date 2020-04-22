@@ -35,6 +35,12 @@
             <artifactId>hzero-starter-feign-replay</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.hzero.boot</groupId>
+            <artifactId>hzero-boot-message</artifactId>
+            <version>${hzero.boot.version}</version>
+        </dependency>
+
         <!-- 数据库驱动 -->
         <dependency>
             <groupId>mysql</groupId>

@@ -17,6 +17,7 @@ public class SwaggerTags {
     public static final String WARNINGHISTORY = "WarningHistory";
     public static final String ESCONTROLLER = "ESController";
     public static final String LOGSCONTROLLER = "LogsController";
+    public static final String MESSAGECONTROLLER = "MessageController";
 
     @Autowired
     public SwaggerTags(Docket docket) {
@@ -25,5 +26,6 @@ public class SwaggerTags {
         docket.tags(new Tag(WARNINGHISTORY, "预警历史"));
         docket.tags(new Tag(ESCONTROLLER, "ES信息"));
         docket.tags(new Tag(LOGSCONTROLLER, "日志信息"));
+        docket.tags(new Tag(MESSAGECONTROLLER, "消息发送管理"));
     }
 }
