@@ -13,6 +13,10 @@ public class MicroserviceMonitoringServicesApplication {
     public static void main(String[] args) {
         SpringApplication.run(MicroserviceMonitoringServicesApplication.class, args);
     }
+
+    public MicroserviceMonitoringServicesApplication() {
+        System.setProperty("es.set.netty.runtime.available.processors", "false");
+    }
 }
 
 

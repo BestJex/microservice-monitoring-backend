@@ -34,6 +34,10 @@ spring:
     chain.gzipped: true
     # 启用缓存
     chain.cache: true
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 192.168.31.111:9300
 
 server: 
   undertow:
