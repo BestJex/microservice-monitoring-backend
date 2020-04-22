@@ -64,7 +64,9 @@ public class MessageServiceImpl implements MessageService {
         receiverList.add(new Receiver().setPhone("18697701660"));
         // 参数
         Map<String, String> maps = new HashMap<>();
-        maps.put("name", "admin");
+        // 随机生成五位数
+        int code = (int) ((Math.random() * 9 + 1) * 10000);
+        maps.put("code", "" + code);
         return messageClient.sendSms(serverCode, messageTemplateCode, receiverList, maps);
     }
 
