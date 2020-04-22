@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.hzero.core.util.Results;
+import org.microservice.monitoring.services.app.service.ESService;
 import org.microservice.monitoring.services.config.SwaggerTags;
 import org.microservice.monitoring.services.domain.entity.ESModel;
 import org.microservice.monitoring.services.domain.repository.ESRepository;
@@ -30,14 +31,16 @@ public class ESController {
     @Autowired
     private ESRepository esRepository;
 
+    @Autowired
+    private ESService esService;
+
+
     @ApiOperation(value = "同步ES数据到Mysql")
     @Permission(level = ResourceLevel.SITE)
     @GetMapping
     public ResponseEntity<ESModel> syncData() {
         Iterable<ESModel> all = esRepository.findAll();
-        all.forEach(val -> {
-            log.info(val.toString());
-        });
+        esService.syncData(all);
         return Results.success();
     }
 }
