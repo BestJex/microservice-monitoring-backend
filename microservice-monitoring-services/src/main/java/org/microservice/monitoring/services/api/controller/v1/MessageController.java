@@ -40,10 +40,19 @@ public class MessageController extends BaseController {
 
     @ApiOperation(value = "公众号消息发送")
     @Permission(level = ResourceLevel.SITE)
-    @GetMapping
+    @GetMapping("/wechat")
     public ResponseEntity<AccessTokenResult> sendWeChat() {
         // messageService.sendWeChat();
         esService.wechatWarning("Caused by: java.net.BindException: 地址已在使用");
+        return Results.success();
+    }
+
+    @ApiOperation(value = "手机短信发送")
+    @Permission(level = ResourceLevel.SITE)
+    @GetMapping("/sms")
+    public ResponseEntity<AccessTokenResult> sendSms() {
+        // messageService.sendWeChat();
+        esService.phoneWarning("Caused by: java.net.BindException: 地址已在使用");
         return Results.success();
     }
 }

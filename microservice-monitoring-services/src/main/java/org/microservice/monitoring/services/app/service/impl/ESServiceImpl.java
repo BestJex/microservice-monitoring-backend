@@ -83,7 +83,7 @@ public class ESServiceImpl implements ESService {
         if (message.indexOf("Caused by: java.net.BindException: 地址已在使用") != -1) {
             // 手机短信预警
             Message phoneResult = messageService.sendPhone();
-            log.info("emailResult-1: {}", phoneResult);
+            log.info("phoneResult-1: {}", phoneResult);
             if (phoneResult.getMessageId() != null) {
                 WarningHistory warningHistory = new WarningHistory();
                 warningHistory.setWarningType("手机短信预警");
@@ -94,7 +94,7 @@ public class ESServiceImpl implements ESService {
                 warningHistory.setWarningSender("Admin");
                 warningHistoryRepository.insert(warningHistory);
             }
-            log.info("emailResult-2: {}", phoneResult);
+            log.info("phoneResult-2: {}", phoneResult);
         }
     }
 
