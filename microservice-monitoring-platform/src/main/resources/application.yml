@@ -123,6 +123,7 @@ hzero:
     enable: true
 
 logging:
+  file: D:\microservice-monitoring\microservice-monitoring-backend\logs\hzero-platform.log
   level:
     io.choerodon: ${LOG_LEVEL:info}
     org.hzero.mybatis: ${LOG_LEVEL:info}

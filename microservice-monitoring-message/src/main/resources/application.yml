@@ -91,6 +91,7 @@ hzero:
     pattern: ${HZERO_RESOURCE_PATTERN:/v1/*,/hzero/*,/hmsg/v1/*,/hmsg/hzero/*}
 
 logging:
+  file: D:\microservice-monitoring\microservice-monitoring-backend\logs\hzero-message.log
   level:
     org.apache.ibatis: ${LOG_LEVEL:info}
     io.choerodon: ${LOG_LEVEL:info}

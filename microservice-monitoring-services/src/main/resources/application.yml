@@ -96,6 +96,7 @@ mybatis:
 
 
 logging:
+  file: D:\microservice-monitoring\microservice-monitoring-backend\logs\microservice-monitoring-services.log
   level:
     org.apache.ibatis: debug
     io.choerodon: debug

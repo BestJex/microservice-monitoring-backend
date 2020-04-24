@@ -165,6 +165,7 @@ hzero:
     enable-async: true
 
 logging:
+  file: D:\microservice-monitoring\microservice-monitoring-backend\logs\hzero-iam.log
   level:
     org.apache.ibatis: ${LOG_LEVEL:debug}
     io.choerodon: ${LOG_LEVEL:debug}

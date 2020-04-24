@@ -83,6 +83,7 @@ mybatis:
     mapUnderscoreToCamelCase: true
 
 logging:
+  file: D:\microservice-monitoring\microservice-monitoring-backend\logs\hzero-config.log
   level:
     org.apache.ibatis: ${LOG_LEVEL:info}
     io.choerodon: ${LOG_LEVEL:info}

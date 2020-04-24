@@ -341,6 +341,7 @@ hzero:
       enable: true
 
 logging:
+  file: D:\microservice-monitoring\microservice-monitoring-backend\logs\hzero-gateway.log
   level:
     io.choerodon: ${LOG_LEVEL:debug}
     org.hzero: ${LOG_LEVEL:debug}

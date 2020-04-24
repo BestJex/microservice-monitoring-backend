@@ -159,6 +159,7 @@ hzero:
       db-owner: ${HZERO_DB_OWNER:}
 
 logging:
+  file: D:\microservice-monitoring\microservice-monitoring-backend\logs\hzero-oauth.log
   level: 
     org.hzero: ${LOG_LEVEL:info}
     io.choerodon: ${LOG_LEVEL:info}

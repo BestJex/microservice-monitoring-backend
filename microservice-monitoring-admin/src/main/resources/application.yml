@@ -117,6 +117,7 @@ hzero:
       enable: ${HZERO_TRACE_REDIS_REPORTER_ENABLE:false}
 
 logging:
+  file: D:\microservice-monitoring\microservice-monitoring-backend\logs\hzero-admin.log
   level:
     root: info
     org.apache.ibatis: ${LOG_LEVEL:info}
