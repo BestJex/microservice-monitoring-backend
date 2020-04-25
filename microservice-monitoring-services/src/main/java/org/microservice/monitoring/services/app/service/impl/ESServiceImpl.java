@@ -8,7 +8,9 @@ import org.microservice.monitoring.services.app.service.ESService;
 import org.microservice.monitoring.services.app.service.MessageService;
 import org.microservice.monitoring.services.domain.entity.ESModel;
 import org.microservice.monitoring.services.domain.entity.Logs;
+import org.microservice.monitoring.services.domain.entity.LogsAnalysis;
 import org.microservice.monitoring.services.domain.entity.WarningHistory;
+import org.microservice.monitoring.services.domain.repository.LogsAnalysisRepository;
 import org.microservice.monitoring.services.domain.repository.LogsRepository;
 import org.microservice.monitoring.services.domain.repository.WarningHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class ESServiceImpl implements ESService {
 
     @Autowired
     private WarningHistoryRepository warningHistoryRepository;
+
+    @Autowired
+    private LogsAnalysisRepository logsAnalysisRepository;
 
     @Override
     public void syncData(Iterable<ESModel> esModels) {
@@ -74,12 +79,14 @@ public class ESServiceImpl implements ESService {
                 newLog.setLogHost(val.getHost());
                 newLog.setLogMessage(val.getMessage());
                 logsRepository.updateByPrimaryKeySelective(newLog);
+                dataAnalysisHandle(val, "update");
             } else {
                 Logs insertLog = new Logs();
                 insertLog.setLogId(val.getId());
                 insertLog.setLogHost(val.getHost());
                 insertLog.setLogMessage(val.getMessage());
                 logsRepository.insert(insertLog);
+                dataAnalysisHandle(val, "insert");
             }
         });
     }
@@ -137,6 +144,22 @@ public class ESServiceImpl implements ESService {
             warningHistoryRepository.insert(warningHistory);
             log.info("wechatResult: {}", objectMap);
         }
+    }
+
+
+    public void dataAnalysisHandle(ESModel esModel, String type) {
+        LogsAnalysis logsAnalysis = new LogsAnalysis();
+        logsAnalysis.setLogId(esModel.getId());
+        logsAnalysis.setLogHost(esModel.getHost());
+        logsAnalysis.setLogCagetory(".log");
+        logsAnalysis.setLogLevel(esModel.getMessage().indexOf("Error") != -1 ? "一级" : (esModel.getMessage().indexOf("Exception") != -1 ? "二级" : "三级"));
+        if (type.equals("update")) {
+            logsAnalysisRepository.updateOptional(logsAnalysis);
+        } else {
+            logsAnalysisRepository.insert(logsAnalysis);
+        }
+
+
     }
 
 }
