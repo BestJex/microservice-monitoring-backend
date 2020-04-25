@@ -40,12 +40,35 @@ public class ESServiceImpl implements ESService {
         esModels.forEach(val -> {
             List<Logs> logs = logsRepository.selectByCondition(Condition.builder(Logs.class)
                     .andWhere(Sqls.custom().andEqualTo(Logs.FIELD_LOG_ID, val.getId())).build());
-            // 邮件预警
-            emailWarning(val.getMessage());
-            // 手机短信预警
-            phoneWarning(val.getMessage());
-            // 微信预警
-            wechatWarning(val.getMessage());
+
+            // 匹配邮箱预警是否打开
+            WarningHistory warningHistory1 = new WarningHistory();
+            warningHistory1.setWarningType("邮箱预警");
+            WarningHistory emailWarningHistory = warningHistoryRepository.selectOne(warningHistory1);
+            if (emailWarningHistory.getWarningStatus().equals("1")) {
+                // 邮件预警
+                emailWarning(val.getMessage());
+            }
+
+            // 匹配手机短信预警是否打开
+            WarningHistory warningHistory2 = new WarningHistory();
+            warningHistory1.setWarningType("手机短信预警");
+            WarningHistory phoneWarningHistory = warningHistoryRepository.selectOne(warningHistory2);
+            if (phoneWarningHistory.getWarningStatus().equals("1")) {
+                // 手机短信预警
+                phoneWarning(val.getMessage());
+            }
+
+            // 匹配微信预警是否打开
+            WarningHistory warningHistory3 = new WarningHistory();
+            warningHistory1.setWarningType("微信预警");
+            WarningHistory wechatWarningHistory = warningHistoryRepository.selectOne(warningHistory3);
+            if (wechatWarningHistory.getWarningStatus().equals("1")) {
+                // 微信预警
+                wechatWarning(val.getMessage());
+            }
+
+            // 处理日志信息
             if (logs.size() != 0) {
                 Logs newLog = logs.get(0);
                 newLog.setLogHost(val.getHost());
