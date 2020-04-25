@@ -6,13 +6,11 @@ import org.hzero.mybatis.domian.Condition;
 import org.hzero.mybatis.util.Sqls;
 import org.microservice.monitoring.services.app.service.ESService;
 import org.microservice.monitoring.services.app.service.MessageService;
-import org.microservice.monitoring.services.domain.entity.ESModel;
-import org.microservice.monitoring.services.domain.entity.Logs;
-import org.microservice.monitoring.services.domain.entity.LogsAnalysis;
-import org.microservice.monitoring.services.domain.entity.WarningHistory;
+import org.microservice.monitoring.services.domain.entity.*;
 import org.microservice.monitoring.services.domain.repository.LogsAnalysisRepository;
 import org.microservice.monitoring.services.domain.repository.LogsRepository;
 import org.microservice.monitoring.services.domain.repository.WarningHistoryRepository;
+import org.microservice.monitoring.services.domain.repository.WarningTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -38,6 +36,9 @@ public class ESServiceImpl implements ESService {
     private WarningHistoryRepository warningHistoryRepository;
 
     @Autowired
+    private WarningTypeRepository warningTypeRepository;
+
+    @Autowired
     private LogsAnalysisRepository logsAnalysisRepository;
 
     @Override
@@ -47,28 +48,28 @@ public class ESServiceImpl implements ESService {
                     .andWhere(Sqls.custom().andEqualTo(Logs.FIELD_LOG_ID, val.getId())).build());
 
             // 匹配邮箱预警是否打开
-            WarningHistory warningHistory1 = new WarningHistory();
-            warningHistory1.setWarningType("邮箱预警");
-            WarningHistory emailWarningHistory = warningHistoryRepository.selectOne(warningHistory1);
-            if (emailWarningHistory.getWarningStatus().equals("1")) {
+            WarningType warningType1 = new WarningType();
+            warningType1.setType("邮箱预警");
+            WarningType emailWarningType = warningTypeRepository.selectOne(warningType1);
+            if (emailWarningType.getStatus().equals("1")) {
                 // 邮件预警
                 emailWarning(val.getMessage());
             }
 
             // 匹配手机短信预警是否打开
-            WarningHistory warningHistory2 = new WarningHistory();
-            warningHistory1.setWarningType("手机短信预警");
-            WarningHistory phoneWarningHistory = warningHistoryRepository.selectOne(warningHistory2);
-            if (phoneWarningHistory.getWarningStatus().equals("1")) {
+            WarningType warningType2 = new WarningType();
+            warningType2.setType("手机短信预警");
+            WarningType phoneWarningType = warningTypeRepository.selectOne(warningType2);
+            if (phoneWarningType.getStatus().equals("1")) {
                 // 手机短信预警
                 phoneWarning(val.getMessage());
             }
 
             // 匹配微信预警是否打开
-            WarningHistory warningHistory3 = new WarningHistory();
-            warningHistory1.setWarningType("微信预警");
-            WarningHistory wechatWarningHistory = warningHistoryRepository.selectOne(warningHistory3);
-            if (wechatWarningHistory.getWarningStatus().equals("1")) {
+            WarningType warningType3 = new WarningType();
+            warningType3.setType("微信预警");
+            WarningType wechatWarningType = warningTypeRepository.selectOne(warningType3);
+            if (wechatWarningType.getStatus().equals("1")) {
                 // 微信预警
                 wechatWarning(val.getMessage());
             }
@@ -148,14 +149,19 @@ public class ESServiceImpl implements ESService {
 
 
     public void dataAnalysisHandle(ESModel esModel, String type) {
-        LogsAnalysis logsAnalysis = new LogsAnalysis();
-        logsAnalysis.setLogId(esModel.getId());
-        logsAnalysis.setLogHost(esModel.getHost());
-        logsAnalysis.setLogCagetory(".log");
-        logsAnalysis.setLogLevel(esModel.getMessage().indexOf("Error") != -1 ? "一级" : (esModel.getMessage().indexOf("Exception") != -1 ? "二级" : "三级"));
         if (type.equals("update")) {
-            logsAnalysisRepository.updateOptional(logsAnalysis);
+            List<LogsAnalysis> logsAnalyses = logsAnalysisRepository.selectByCondition(Condition.builder(LogsAnalysis.class).andWhere(Sqls.custom().andEqualTo(LogsAnalysis.FIELD_LOG_ID, esModel.getId())).build());
+            LogsAnalysis logsAnalysis = logsAnalyses.get(0);
+            logsAnalysis.setLogHost(esModel.getHost());
+            logsAnalysis.setLogCagetory(".log");
+            logsAnalysis.setLogLevel(esModel.getMessage().indexOf("Error") != -1 ? "一级" : (esModel.getMessage().indexOf("Exception") != -1 ? "二级" : "三级"));
+            logsAnalysisRepository.updateByPrimaryKeySelective(logsAnalysis);
         } else {
+            LogsAnalysis logsAnalysis = new LogsAnalysis();
+            logsAnalysis.setLogId(esModel.getId());
+            logsAnalysis.setLogHost(esModel.getHost());
+            logsAnalysis.setLogCagetory(".log");
+            logsAnalysis.setLogLevel(esModel.getMessage().indexOf("Error") != -1 ? "一级" : (esModel.getMessage().indexOf("Exception") != -1 ? "二级" : "三级"));
             logsAnalysisRepository.insert(logsAnalysis);
         }
 

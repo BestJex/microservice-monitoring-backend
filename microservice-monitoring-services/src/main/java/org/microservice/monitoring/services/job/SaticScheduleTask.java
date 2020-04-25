@@ -31,7 +31,7 @@ public class SaticScheduleTask {
     @Scheduled(fixedRate = 1000 * 60 * 60 * 2)
     private void syncSchedule() {
         log.info("触发了定时任务...");
-        Iterable<ESModel> all = esRepository.findAll();
-        esService.syncData(all);
+//        Iterable<ESModel> all = esRepository.findAll();
+//        esService.syncData(all);
     }
 }
